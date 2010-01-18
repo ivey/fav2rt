@@ -20,7 +20,7 @@ favs = Twitter::Base.new(Twitter::HTTPAuth.new(auth['favs']['user'],
 
 count = 1
 
-main.favorites.reverse.each do |i|
+main.favorites(:count => 200).reverse.each do |i|
   unless db.get_first_row("select * from favorites where guid = '#{i.id}'")
     db.execute "insert into favorites values ('#{i.id}')"
     favs.retweet i.id 
