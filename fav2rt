@@ -23,7 +23,12 @@ count = 1
 main.favorites(:count => 200).reverse.each do |i|
   unless db.get_first_row("select * from favorites where guid = '#{i.id}'")
     db.execute "insert into favorites values ('#{i.id}')"
-    favs.retweet i.id 
+    if ENV.has_key? "FAV2RT_PROMPT"
+      print "#{i.user.screen_name}: #{i.text} (#{i.id})  > "
+      next unless (gets.chomp.downcase == "y")
+    end
+
+    favs.retweet i.id
     count += 1
     sleep 5
   end
