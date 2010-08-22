@@ -11,12 +11,13 @@ db = SQLite3::Database.new(File.dirname(__FILE__) + "/favorites.db")
 
 db.execute_batch "create table if not exists favorites (guid string)"
 
-main = Twitter::Base.new(Twitter::HTTPAuth.new(auth['main']['user'],
-                                               auth['main']['pass'],
-                                               :ssl => true))
-favs = Twitter::Base.new(Twitter::HTTPAuth.new(auth['favs']['user'],
-                                               auth['favs']['pass'],
-                                               :ssl => true))
+oauth = Twitter::OAuth.new(auth['app']['consumer_key'], auth['app']['consumer_secret'])
+oauth.authorize_from_access(auth['main']['token'], auth['main']['secret'])
+main = Twitter::Base.new oauth
+
+oauth = Twitter::OAuth.new(auth['app']['consumer_key'], auth['app']['consumer_secret'])
+oauth.authorize_from_access(auth['favs']['token'], auth['favs']['secret'])
+favs = Twitter::Base.new oauth
 
 count = 1
 
