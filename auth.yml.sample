@@ -1,0 +1,11 @@
+app:
+  consumer_key: 
+  consumer_secret: 
+main:
+  user: ivey
+  token: 
+  secret: 
+favs:
+  user: iveyfavs
+  token: 
+  secret: 

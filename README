@@ -1,0 +1,10 @@
+Pull 1 accounts favorites, and RT them through another account.
+
+Sorry for the bare README...I don't know how useful this is to anyone else.
+
+Step 1: Make an OAuth application at Twitter Dev portal
+Step 2: Use twurl to get keys for main account and the RT account
+Step 3: Copy auth.yml.sample to auth.yml, and add various keys
+Step 4: Run script
+
+This is released into the public domain, do whatever you want with it.
