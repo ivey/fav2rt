@@ -1,6 +1,26 @@
 #!/usr/bin/env ruby
-# Copyright 2009-2010 Michael D. Ivey <ivey@gweezlebur.com>
-# DWTFYW
+# Written by Michael D. Ivey <ivey@gweezlebur.com>
+# Released into the public domain
+#
+# Step 1: Make an OAuth application at Twitter Dev portal
+# Step 2: Use twurl to get keys for main account and the RT account
+# Step 3: Copy auth.yml.sample to auth.yml, and add various keys
+# Step 4: Run script
+#  
+# auth.yml format:
+#  app:
+#    consumer_key: 
+#    consumer_secret: 
+#  main:
+#    user: ivey
+#    token: 
+#    secret: 
+#  favs:
+#    user: iveyfavs
+#    token: 
+#    secret: 
+#  
+#
 
 require 'rubygems'
 require 'twitter'
