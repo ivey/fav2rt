@@ -20,26 +20,37 @@
 #    token: 
 #    secret: 
 #  
-#
+# You can also set page: 2 or page: 3 if you want to get favs older than
+# the last 200. You can manually tweak this as needed to find the right RTs
 
 require 'rubygems'
 require 'twitter'
 require 'sqlite3'
+require 'yaml'
 
 auth = YAML.load(File.open(File.dirname(__FILE__) + "/auth.yml"))
 db = SQLite3::Database.new(File.dirname(__FILE__) + "/favorites.db")
 
 db.execute_batch "create table if not exists favorites (guid string)"
 
-oauth = Twitter::OAuth.new(auth['app']['consumer_key'], auth['app']['consumer_secret'])
-oauth.authorize_from_access(auth['main']['token'], auth['main']['secret'])
-main = Twitter::Base.new oauth
+main = Twitter::REST::Client.new do |config|
+  config.consumer_key        = auth['app']['consumer_key']
+  config.consumer_secret     = auth['app']['consumer_secret']
+  config.access_token        = auth['main']['token']
+  config.access_token_secret = auth['main']['secret']
+end
 
-oauth = Twitter::OAuth.new(auth['app']['consumer_key'], auth['app']['consumer_secret'])
-oauth.authorize_from_access(auth['favs']['token'], auth['favs']['secret'])
-favs = Twitter::Base.new oauth
+favs = Twitter::REST::Client.new do |config|
+  config.consumer_key        = auth['app']['consumer_key']
+  config.consumer_secret     = auth['app']['consumer_secret']
+  config.access_token        = auth['favs']['token']
+  config.access_token_secret = auth['favs']['secret']
+end
 
 count = 1
+
+opts = {:count => 200}
+opts[:page] = auth['page'] if auth['page']
 
 main.favorites(:count => 200).reverse.each do |i|
   unless db.get_first_row("select * from favorites where guid = '#{i.id}'")
