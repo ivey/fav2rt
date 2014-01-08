@@ -52,7 +52,7 @@ count = 1
 opts = {:count => 200}
 opts[:page] = auth['page'] if auth['page']
 
-main.favorites(:count => 200).reverse.each do |i|
+main.favorites(opts).reverse.each do |i|
   unless db.get_first_row("select * from favorites where guid = '#{i.id}'")
     db.execute "insert into favorites values ('#{i.id}')"
     if ENV.has_key? "FAV2RT_PROMPT"
@@ -61,6 +61,7 @@ main.favorites(:count => 200).reverse.each do |i|
     end
 
     favs.retweet i.id
+    print "#{i.user.screen_name}: #{i.text} (#{i.id})" if auth['debug']
     count += 1
     sleep 5
   end
